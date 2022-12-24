@@ -1,0 +1,14 @@
+{
+  "name": "hospital_scraper",
+  "version": "1.0.0",
+  "dependencies": {
+    "async-await-retry": "^2.0.0",
+    "bluebird": "^3.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "excel4node": "^1.8.0",
+    "iconv-lite": "^0.6.3",
+    "moment": "^2.29.4",
+    "superagent": "^8.0.6",
+    "superagent-charset": "^1.2.0"
+  }
+}

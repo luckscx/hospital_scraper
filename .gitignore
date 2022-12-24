@@ -1,2 +1,2 @@
-*.json
-*.xlsx
+output/*.json
+output/*.xlsx
