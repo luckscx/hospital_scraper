@@ -7,6 +7,7 @@
     "cheerio": "^1.0.0-rc.12",
     "excel4node": "^1.8.0",
     "iconv-lite": "^0.6.3",
+    "md5": "^2.3.0",
     "moment": "^2.29.4",
     "superagent": "^8.0.6",
     "superagent-charset": "^1.2.0"
