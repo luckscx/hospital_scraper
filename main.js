@@ -1,4 +1,4 @@
-const list2xls = require('./excel.js')
+const {checkHasXLS, list2xls} = require('./excel.js')
 const scraper = require('./scraper.js')
 const bluebird = require('bluebird')
 
@@ -7,6 +7,13 @@ const main = async () => {
     for (const prov_obj of prov_list) {
         const zone_list = await scraper.getCityList(prov_obj.prov_url)
         for (const zone of zone_list) {
+
+            const file_name = `${prov_obj.prov_name}-${zone.city_name}`
+            const has_xls = await checkHasXLS(file_name)
+            if (has_xls) {
+                continue
+            }
+
             const host_list = []
             const h_list = await scraper.getCityHospitalList(zone.city_url)
             await bluebird.map(h_list, async (h_obj) => {
@@ -17,11 +24,9 @@ const main = async () => {
             }, {concurrency: 8}).then(() => {
                 console.log("done %s %s",prov_obj.prov_name, zone.city_name)
             })
-            const file_name = `${prov_obj.prov_name}-${zone.city_name}`
+
             list2xls(file_name, host_list)
-            break
         }
-        break
     }
 };
 

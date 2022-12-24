@@ -50,6 +50,7 @@ const cleanStr = in_str => {
 };
 
 module.exports = {
+    checkFileExists,
     loadPageToCheerio,
     cleanStr,
 }

@@ -1,9 +1,15 @@
 var excel = require('excel4node');
 const fs = require("fs")
+const {checkFileExists} = require('./util.js')
+
+const checkHasXLS = async (name) => {
+    const xls_name = `output/${name}.xlsx`
+    return await checkFileExists(xls_name)
+};
 
 const list2xls = (name, list_obj) => {
-    const json_file = `output/${name}.json`
-    fs.writeFileSync(json_file, JSON.stringify(list_obj))
+    // const json_file = `output/${name}.json`
+    // fs.writeFileSync(json_file, JSON.stringify(list_obj))
     var workbook = new excel.Workbook();
 
     var worksheet = workbook.addWorksheet(name);
@@ -64,4 +70,4 @@ const list2xls = (name, list_obj) => {
 // };
 // loadTest()
 
-module.exports = list2xls
+module.exports = {list2xls, checkHasXLS}

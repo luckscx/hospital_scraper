@@ -78,8 +78,9 @@ const getCityList = async (dist_url) => {
     const subcitys = []
     $("div.ksbd ul li").each(function() {
         const link = $(this).find("a").attr("href")
+        const name = $(this).find("a").attr("title")
         subcitys.push({
-            city_name : $(this).text(),
+            city_name : name,
             city_url : `https:${link}`
         })
     })
