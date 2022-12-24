@@ -19,7 +19,6 @@ const main = async () => {
             })
         }
         list2xls(prov_obj.prov_name, host_list)
-        break
     }
 };
 

@@ -29,11 +29,29 @@ const getTypeTag = page_obj => {
     return {t1,t2,t3};
 };
 
+//获取科室信息
+const getHospitalDepts = async (h_obj) => {
+    const keshi_page = h_obj.h_url.replace(".html","/keshi/list.html")
+    const $ = await loadPageToCheerio(keshi_page)
+    const dept_list = []
+    $(".hos-keshi .item-wrap .item-cont .item-li").each(function () {
+        dept_list.push({
+            dept_name : $(this).find(".name-txt").text(),
+            doc_cnt : parseInt($(this).find(".count").text())
+        })
+    })
+    if (dept_list.length == 0) {
+        console.log(h_obj)
+        console.log(keshi_page)
+    }
+    return dept_list;
+};
+
 const getHospitalDetail = async (h_obj) => {
-    console.log("getHostitalDetail for %s", h_obj.name)
     const jieshao_page = h_obj.h_url.replace(".html","/jieshao.html")
     const $ = await loadPageToCheerio(jieshao_page)
     const tags = getTypeTag($)
+    const dept_list = getHospitalDepts(h_obj)
     const result_obj = {
         prov : h_obj.prov,
         city : h_obj.city,
@@ -44,7 +62,8 @@ const getHospitalDetail = async (h_obj) => {
         t3 : tags.t3,
         tel : $(".j-i-phone").text(),
         desc : $(".h-j-info").text(),
-        dist : getAddress($)
+        address : getAddress($),
+        dept_list : dept_list,
     }
     return result_obj;
 };
@@ -73,6 +92,11 @@ const getProvList = async () => {
             prov_name : link.text(),
             prov_url : `https:${link.attr("href")}`
         })
+    })
+
+    prov_list.push({
+        prov_name : "北京",
+        prov_url : "https://www.haodf.com/hospital/list-11.html"
     })
 
     return prov_list;
