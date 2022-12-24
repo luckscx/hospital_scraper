@@ -5,9 +5,9 @@ const bluebird = require('bluebird')
 const main = async () => {
     const prov_list = await scraper.getProvList()
     for (const prov_obj of prov_list) {
-        const host_list = []
         const zone_list = await scraper.getCityList(prov_obj.prov_url)
         for (const zone of zone_list) {
+            const host_list = []
             const h_list = await scraper.getCityHospitalList(zone.city_url)
             await bluebird.map(h_list, async (h_obj) => {
                 h_obj.prov = prov_obj.prov_name
@@ -17,8 +17,11 @@ const main = async () => {
             }, {concurrency: 8}).then(() => {
                 console.log("done %s %s",prov_obj.prov_name, zone.city_name)
             })
+            const file_name = `${prov_obj.prov_name}-${zone.city_name}`
+            list2xls(file_name, host_list)
+            break
         }
-        list2xls(prov_obj.prov_name, host_list)
+        break
     }
 };
 

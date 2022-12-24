@@ -34,15 +34,20 @@ const getHospitalDepts = async (h_obj) => {
     const keshi_page = h_obj.h_url.replace(".html","/keshi/list.html")
     const $ = await loadPageToCheerio(keshi_page)
     const dept_list = []
+    if (!$) {
+        console.log("api load limit for keshi_page")
+        console.log(h_obj)
+        return dept_list
+    }
     $(".hos-keshi .item-wrap .item-cont .item-li").each(function () {
         dept_list.push({
             dept_name : $(this).find(".name-txt").text(),
-            doc_cnt : parseInt($(this).find(".count").text())
+            doc_cnt : parseInt($(this).find(".count").text()),
+            dept_url : $(this).find("a").attr("href")
         })
     })
     if (dept_list.length == 0) {
-        console.log(h_obj)
-        console.log(keshi_page)
+        console.log("%s 无科室列表",h_obj.name)
     }
     return dept_list;
 };
@@ -51,7 +56,7 @@ const getHospitalDetail = async (h_obj) => {
     const jieshao_page = h_obj.h_url.replace(".html","/jieshao.html")
     const $ = await loadPageToCheerio(jieshao_page)
     const tags = getTypeTag($)
-    const dept_list = getHospitalDepts(h_obj)
+    const dept_list = await getHospitalDepts(h_obj)
     const result_obj = {
         prov : h_obj.prov,
         city : h_obj.city,

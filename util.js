@@ -18,14 +18,19 @@ const loadPageWithCache = async (url, char) => {
     if (has_cache) {
         return await fs.promises.readFile(cache_file)
     } else {
-        const html = await superagent.get(url).charset(char).buffer(true)
-        if (!html) {
-            console.log("not get html for %s",dist_url)
-            return null;
+        try {
+            const html = await superagent.get(url).charset(char).buffer(true)
+            if (!html) {
+                console.log("not get html for %s",dist_url)
+                return null;
+            }
+            console.log("url loaded %s",url)
+            const save_text = html.text
+            await fs.promises.writeFile(cache_file, save_text)
+            return save_text
+        } catch {
+            return null
         }
-        const save_text = html.text
-        await fs.promises.writeFile(cache_file, save_text)
-        return save_text
     }
 };
 
