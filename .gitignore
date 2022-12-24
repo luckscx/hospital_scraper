@@ -1,3 +1,4 @@
 output/*.json
 output/*.xlsx
 cache/*
+node_modules

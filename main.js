@@ -14,7 +14,7 @@ const main = async () => {
                 h_obj.city = zone.city_name
                 const detail_obj = await scraper.getHospitalDetail(h_obj)
                 host_list.push(detail_obj)
-            }, {concurrency: 4}).then(() => {
+            }, {concurrency: 10}).then(() => {
                 console.log("done")
             })
         }
